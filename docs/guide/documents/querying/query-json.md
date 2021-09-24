@@ -1,4 +1,8 @@
-# Query for Raw JSON
+# Streaming or Loading Raw JSON
+
+Marten stores all of its document and event data by serializing .Net objects to JSON, and persisting
+that data to Postgresql tables in [JSONB fields](https://www.compose.com/articles/faster-operations-with-the-jsonb-data-type-in-postgresql/).
+
 
 Added in Marten v0.6 is the ability to retrieve just the raw JSON string for a document. The point is to be able to fetch the raw JSON from the database for a document and immediately stream that data to a web client without having to take the performance hit of deserializing and serializing the object to and from JSON.
 

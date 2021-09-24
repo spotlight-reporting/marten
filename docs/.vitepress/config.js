@@ -83,7 +83,7 @@ module.exports = {
                         {text: 'Searching for NULL Values', link: '/guide/documents/querying/linq/nulls'},
                     ]},
                 {text: 'Querying with Postgres SQL', link: '/guide/documents/querying/sql'},
-                {text: 'Retrieving or Streaming JSON', link: '/guide/documents/querying/query-json'},
+                {text: 'Streaming or Loading Raw JSON', link: '/guide/documents/querying/query-json'},
                 {text: 'Compiled Queries', link: '/guide/documents/querying/compiled-queries'},
                 {text: 'Batched Queries', link: '/guide/documents/querying/batched-queries'},
                 {text: 'Metadata Queries', link: '/guide/documents/querying/metadata-queries'},

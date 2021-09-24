@@ -115,6 +115,7 @@ namespace AspNetCoreWithMarten
             };
         }
 
+
         public class RaceCondition
         {
             private readonly IDocumentSession _session;
