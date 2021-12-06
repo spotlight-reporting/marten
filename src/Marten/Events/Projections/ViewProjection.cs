@@ -76,7 +76,7 @@ namespace Marten.Events.Projections
                 var byTenant = events.GroupBy(x => x.TenantId);
                 var groupTasks = byTenant.Select(tGroup =>
                 {
-                    var tenant = tenancy[tGroup.Key];
+                    var tenant = tenancy.GetTenant(tGroup.Key);
                     return groupSingleTenant(tenant, querySession.ForTenant(tGroup.Key), tGroup.ToList());
                 });
 

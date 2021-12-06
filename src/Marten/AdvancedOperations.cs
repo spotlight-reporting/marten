@@ -50,7 +50,7 @@ namespace Marten
         /// <param name="floor"></param>
         public Task ResetHiloSequenceFloor<T>(string tenantId, long floor)
         {
-            return _store.Tenancy[tenantId].ResetHiloSequenceFloor<T>(floor);
+            return _store.Tenancy.GetTenant(tenantId).ResetHiloSequenceFloor<T>(floor);
         }
 
         /// <summary>

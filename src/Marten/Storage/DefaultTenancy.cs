@@ -29,14 +29,9 @@ namespace Marten.Storage
 
         public TenancyStyle Style { get; } = TenancyStyle.Conjoined;
 
-        public ITenant this[string tenantId] => new LightweightTenant(tenantId, Default, Options.RetryPolicy());
+        public ITenant GetTenant(string tenantId) => new LightweightTenant(tenantId, Default, Options.RetryPolicy());
 
         public ITenant Default { get; }
-
-        public void Initialize()
-        {
-            seedSchemas(Default);
-        }
 
         public IDocumentCleaner Cleaner { get; }
         public IDocumentSchema Schema { get; }

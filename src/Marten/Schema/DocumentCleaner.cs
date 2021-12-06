@@ -57,7 +57,7 @@ WHERE  s.sequence_name like 'mt_%' and s.sequence_schema = ANY(:schemas);";
 
         public async Task DeleteAllDocumentsAsync()
         {
-            using var conn = _tenant.CreateConnection();
+            await using var conn = _tenant.CreateConnection();
             await conn.OpenAsync().ConfigureAwait(false);
 
             var schemas = _options.Storage.AllSchemaNames();

@@ -25,6 +25,9 @@ namespace Marten.Storage
         /// </summary>
         void ResetSchemaExistenceChecks();
 
+        /// <summary>
+        /// Rewinds the feature tracking at development time
+        /// </summary>
         void MarkAllFeaturesAsChecked();
 
         /// <summary>
@@ -49,6 +52,7 @@ namespace Marten.Storage
         /// </summary>
         /// <param name="storageType"></param>
         /// <returns></returns>
+        [Obsolete("This shouldn't be here")]
         IFeatureSchema FindFeature(Type storageType);
     }
 
@@ -105,6 +109,7 @@ namespace Marten.Storage
         ///     in the database
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Get this into what's now IDocumentSchema")]
         Task<IReadOnlyList<DbObjectName>> DocumentTables();
 
         /// <summary>

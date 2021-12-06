@@ -36,11 +36,10 @@ namespace Marten.Storage
         {
             var system = new FileSystem();
 
-            system.DeleteDirectory(directory);
-            system.CreateDirectory(directory);
+            system.CleanDirectory(directory);
 
             var features = _features.AllActiveFeatures(_tenant).ToArray();
-            writeDatabaseSchemaGenerationScript(directory, system, features);
+            writeDatabaseSchemaGenerationScript(directory, features);
 
             foreach (var feature in features)
             {
@@ -53,7 +52,7 @@ namespace Marten.Storage
             }
         }
 
-        private void writeDatabaseSchemaGenerationScript(string directory, FileSystem system, IFeatureSchema[] schemaObjects)
+        private void writeDatabaseSchemaGenerationScript(string directory, IFeatureSchema[] schemaObjects)
         {
             var allSchemaNames = StoreOptions.Storage.AllSchemaNames();
             var script = DatabaseSchemaGenerator.GenerateScript(StoreOptions, allSchemaNames);
@@ -73,7 +72,7 @@ namespace Marten.Storage
             }
 
             var filename = directory.AppendPath("all.sql");
-            system.WriteStringToFile(filename, writer.ToString());
+            File.WriteAllText(filename, writer.ToString());
         }
 
         public async Task<SchemaMigration> CreateMigrationAsync()
@@ -164,7 +163,7 @@ namespace Marten.Storage
         {
             var mapping = _features.MappingFor(documentType);
 
-            using var conn = _tenant.CreateConnection();
+            await using var conn = _tenant.CreateConnection();
             await conn.OpenAsync().ConfigureAwait(false);
 
             var migration = await SchemaMigration.Determine(conn, mapping.Schema.Objects).ConfigureAwait(false);
@@ -179,9 +178,9 @@ namespace Marten.Storage
             system.DeleteDirectory(directory);
             system.CreateDirectory(directory);
             var features = _features.AllActiveFeatures(_tenant).ToArray();
-            writeDatabaseSchemaGenerationScript(directory, system, features);
+            writeDatabaseSchemaGenerationScript(directory, features);
 
-            using var conn = _tenant.CreateConnection();
+            await using var conn = _tenant.CreateConnection();
             await conn.OpenAsync().ConfigureAwait(false);
 
             foreach (var feature in features)

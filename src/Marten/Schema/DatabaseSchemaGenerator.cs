@@ -10,6 +10,7 @@ using Weasel.Core;
 
 namespace Marten.Schema
 {
+    [Obsolete("Move this to Weasel")]
     internal class DatabaseSchemaGenerator
     {
         private const string BeginScript = @"DO $$

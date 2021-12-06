@@ -109,7 +109,7 @@ namespace Marten.Schema
 
             foreach (var tenantConfig in _configurationPerTenant)
             {
-                var tenant = tenancy[tenantConfig.Key];
+                var tenant = tenancy.GetTenant(tenantConfig.Key);
                 var config = tenantConfig.Value;
 
                 CreateDb(tenant, config);

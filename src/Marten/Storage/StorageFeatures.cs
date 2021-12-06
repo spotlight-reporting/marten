@@ -244,6 +244,7 @@ namespace Marten.Storage
         /// All referenced schema names by this DocumentStore
         /// </summary>
         /// <returns></returns>
+        [Obsolete("Do this in weasel based on unique ISchemaObject schemas")]
         public string[] AllSchemaNames()
         {
             var schemas = AllDocumentMappings

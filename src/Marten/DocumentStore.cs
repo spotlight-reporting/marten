@@ -110,7 +110,7 @@ namespace Marten
             BulkInsertMode mode = BulkInsertMode.InsertsOnly,
             int batchSize = 1000)
         {
-            var bulkInsertion = new BulkInsertion(Tenancy[tenantId], Options);
+            var bulkInsertion = new BulkInsertion(Tenancy.GetTenant(tenantId), Options);
             bulkInsertion.BulkInsert(documents, mode, batchSize);
         }
 
@@ -118,7 +118,7 @@ namespace Marten
             BulkInsertMode mode = BulkInsertMode.InsertsOnly,
             int batchSize = 1000)
         {
-            var bulkInsertion = new BulkInsertion(Tenancy[tenantId], Options);
+            var bulkInsertion = new BulkInsertion(Tenancy.GetTenant(tenantId), Options);
             bulkInsertion.BulkInsertDocuments(documents, mode, batchSize);
         }
 
@@ -134,7 +134,7 @@ namespace Marten
             BulkInsertMode mode = BulkInsertMode.InsertsOnly, int batchSize = 1000,
             CancellationToken cancellation = default)
         {
-            var bulkInsertion = new BulkInsertion(Tenancy[tenantId], Options);
+            var bulkInsertion = new BulkInsertion(Tenancy.GetTenant(tenantId), Options);
             return bulkInsertion.BulkInsertAsync(documents, mode, batchSize, cancellation);
         }
 
@@ -150,7 +150,7 @@ namespace Marten
             BulkInsertMode mode = BulkInsertMode.InsertsOnly,
             int batchSize = 1000, CancellationToken cancellation = default)
         {
-            var bulkInsertion = new BulkInsertion(Tenancy[tenantId], Options);
+            var bulkInsertion = new BulkInsertion(Tenancy.GetTenant(tenantId), Options);
             return bulkInsertion.BulkInsertDocumentsAsync(documents, mode, batchSize, cancellation);
         }
 
@@ -200,7 +200,7 @@ namespace Marten
 
         public IQuerySession QuerySession(SessionOptions options)
         {
-            var tenant = Tenancy[options.TenantId];
+            var tenant = Tenancy.GetTenant(options.TenantId);
 
             if (!Options.Advanced.DefaultTenantUsageEnabled &&
                 tenant.TenantId == Marten.Storage.Tenancy.DefaultTenantId)
@@ -225,7 +225,7 @@ namespace Marten
 
         public IQuerySession QuerySession(string tenantId)
         {
-            var tenant = Tenancy[tenantId];
+            var tenant = Tenancy.GetTenant(tenantId);
 
             if (!Options.Advanced.DefaultTenantUsageEnabled &&
                 tenant.TenantId == Marten.Storage.Tenancy.DefaultTenantId)
@@ -299,7 +299,7 @@ namespace Marten
 
         private IDocumentSession openSession(SessionOptions options)
         {
-            var tenant = Tenancy[options.TenantId];
+            var tenant = Tenancy.GetTenant(options.TenantId);
 
             if (!Options.Advanced.DefaultTenantUsageEnabled &&
                 tenant.TenantId == Marten.Storage.Tenancy.DefaultTenantId)
