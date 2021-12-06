@@ -4,6 +4,7 @@ using System.IO;
 using Marten.Events.Archiving;
 using Marten.Events.Schema;
 using Marten.Storage;
+using Marten.WeaselExport;
 using Weasel.Core;
 using Weasel.Postgresql;
 using Weasel.Postgresql.Functions;
@@ -22,7 +23,7 @@ namespace Marten.Events
             yield break;
         }
 
-        ISchemaObject[] IFeatureSchema.Objects
+        ISchemaObject[] ISchemaObjectGroup.Objects
         {
             get
             {
@@ -37,9 +38,6 @@ namespace Marten.Events
                 };
                 #endregion
 
-                // compute the args for mt_append_event function
-                var streamIdTypeArg = StreamIdentity == StreamIdentity.AsGuid ? "uuid" : "varchar";
-                var appendEventFunctionArgs = $"{streamIdTypeArg}, varchar, varchar, uuid[], varchar[], varchar[], jsonb[]";
 
                 return new ISchemaObject[]
                 {
@@ -55,7 +53,7 @@ namespace Marten.Events
         }
 
         Type IFeatureSchema.StorageType => typeof(EventGraph);
-        string IFeatureSchema.Identifier { get; } = "eventstore";
+        string ISchemaObjectGroup.Identifier { get; } = "eventstore";
 
         void IFeatureSchema.WritePermissions(DdlRules rules, TextWriter writer)
         {

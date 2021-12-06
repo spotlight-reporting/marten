@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Baseline;
 using Marten.Exceptions;
 using Marten.Schema;
+using Marten.WeaselExport;
 using Weasel.Postgresql;
 
 namespace Marten.Storage
@@ -54,8 +55,13 @@ namespace Marten.Storage
 
         private void writeDatabaseSchemaGenerationScript(string directory, IFeatureSchema[] schemaObjects)
         {
-            var allSchemaNames = StoreOptions.Storage.AllSchemaNames();
-            var script = DatabaseSchemaGenerator.GenerateScript(StoreOptions, allSchemaNames);
+            var allSchemaNames = schemaObjects
+                .SelectMany(x => x.Objects)
+                .Select(x => x.Identifier.Schema)
+                .Distinct()
+                .ToArray();
+
+            var script = DatabaseSchemaGenerator.GenerateScript(allSchemaNames);
 
             var writer = new StringWriter();
 
@@ -79,7 +85,7 @@ namespace Marten.Storage
         {
             var @objects = _features.AllActiveFeatures(_tenant).SelectMany(x => x.Objects).ToArray();
 
-            using var conn = _tenant.CreateConnection();
+            await using var conn = _tenant.CreateConnection();
             await conn.OpenAsync().ConfigureAwait(false);
 
             return await SchemaMigration.Determine(conn, @objects).ConfigureAwait(false);
@@ -92,7 +98,7 @@ namespace Marten.Storage
             StoreOptions.Advanced.DdlRules.WriteScript(writer, (r, w) =>
             {
                 var allSchemaNames = StoreOptions.Storage.AllSchemaNames();
-                DatabaseSchemaGenerator.WriteSql(StoreOptions, allSchemaNames, w);
+                DatabaseSchemaGenerator.WriteSql(allSchemaNames, w);
 
                 foreach (var feature in _features.AllActiveFeatures(_tenant))
                 {

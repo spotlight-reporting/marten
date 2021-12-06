@@ -2,18 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Marten.WeaselExport;
 using Weasel.Postgresql;
 
 #nullable enable
 
 namespace Marten.Storage
 {
+
     #region sample_IFeatureSchema
     /// <summary>
     /// Defines the database objects for a named feature within your
     /// Marten application
     /// </summary>
-    public interface IFeatureSchema
+    public interface IFeatureSchema : ISchemaObjectGroup
     {
         /// <summary>
         /// Any document or feature types that this feature depends on. Used
@@ -24,20 +26,10 @@ namespace Marten.Storage
         IEnumerable<Type> DependentTypes();
 
         /// <summary>
-        /// All the schema objects in this feature
-        /// </summary>
-        ISchemaObject[] Objects { get; }
-
-        /// <summary>
         /// Identifier by type for this feature. Used along with the DependentTypes()
         /// collection to control the proper ordering of object creation or scripting
         /// </summary>
         Type StorageType { get; }
-
-        /// <summary>
-        /// Really just the filename when the SQL is exported
-        /// </summary>
-        string Identifier { get; }
 
         /// <summary>
         /// Write any permission SQL when this feature is exported to a SQL

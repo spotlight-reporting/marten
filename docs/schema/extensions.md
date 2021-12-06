@@ -10,7 +10,7 @@ New in Marten 2.4.0 is the ability to add additional features with custom databa
 /// Defines the database objects for a named feature within your
 /// Marten application
 /// </summary>
-public interface IFeatureSchema
+public interface IFeatureSchema : ISchemaObjectGroup
 {
     /// <summary>
     /// Any document or feature types that this feature depends on. Used
@@ -21,20 +21,10 @@ public interface IFeatureSchema
     IEnumerable<Type> DependentTypes();
 
     /// <summary>
-    /// All the schema objects in this feature
-    /// </summary>
-    ISchemaObject[] Objects { get; }
-
-    /// <summary>
     /// Identifier by type for this feature. Used along with the DependentTypes()
     /// collection to control the proper ordering of object creation or scripting
     /// </summary>
     Type StorageType { get; }
-
-    /// <summary>
-    /// Really just the filename when the SQL is exported
-    /// </summary>
-    string Identifier { get; }
 
     /// <summary>
     /// Write any permission SQL when this feature is exported to a SQL
@@ -45,7 +35,7 @@ public interface IFeatureSchema
     void WritePermissions(DdlRules rules, TextWriter writer);
 }
 ```
-<sup><a href='https://github.com/JasperFx/marten/blob/master/src/Marten/Storage/IFeatureSchema.cs#L11-L51' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifeatureschema' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/marten/blob/master/src/Marten/Storage/IFeatureSchema.cs#L13-L43' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_ifeatureschema' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Not to worry though, Marten comes with a base class that makes it a bit simpler to build out new features. Here's a very simple
@@ -222,5 +212,5 @@ var sequence = new Sequence(new DbObjectName(DatabaseSchemaName, "mt_events_sequ
     OwnerColumn = "seq_id"
 };
 ```
-<sup><a href='https://github.com/JasperFx/marten/blob/master/src/Marten/Events/EventGraph.FeatureSchema.cs#L32-L38' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-sequence' title='Start of snippet'>anchor</a></sup>
+<sup><a href='https://github.com/JasperFx/marten/blob/master/src/Marten/Events/EventGraph.FeatureSchema.cs#L33-L39' title='Snippet source file'>snippet source</a> | <a href='#snippet-sample_using-sequence' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->

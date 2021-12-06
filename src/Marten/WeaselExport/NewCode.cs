@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Npgsql;
-using Weasel.Core;
+using Weasel.Postgresql;
+using CommandExtensions = Weasel.Core.CommandExtensions;
 
 namespace Marten.WeaselExport
 {
@@ -13,6 +14,20 @@ namespace Marten.WeaselExport
         NpgsqlConnection CreateConnection();
     }
 
+    public interface ISchemaObjectGroup
+    {
+        /// <summary>
+        /// All the schema objects in this feature
+        /// </summary>
+        ISchemaObject[] Objects { get; }
+
+        /// <summary>
+        /// Really just the filename when the SQL is exported
+        /// </summary>
+        string Identifier { get; }
+    }
+
+
     public static class ConnectionSourceExtensions
     {
         public static void RunSql(this IConnectionSource tenant, string sql)
@@ -22,7 +37,7 @@ namespace Marten.WeaselExport
 
             try
             {
-                conn.CreateCommand(sql).ExecuteNonQuery();
+                CommandExtensions.CreateCommand(conn, sql).ExecuteNonQuery();
             }
             finally
             {
@@ -38,7 +53,7 @@ namespace Marten.WeaselExport
 
             try
             {
-                await conn.CreateCommand(sql).ExecuteNonQueryAsync().ConfigureAwait(false);
+                await CommandExtensions.CreateCommand(conn, sql).ExecuteNonQueryAsync().ConfigureAwait(false);
             }
             finally
             {
