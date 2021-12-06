@@ -17,6 +17,7 @@ using Marten.Schema;
 using Marten.Services;
 using Marten.Storage;
 using Marten.Util;
+using Marten.WeaselExport;
 using Npgsql;
 using Remotion.Linq;
 using Weasel.Core;

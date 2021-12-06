@@ -20,6 +20,7 @@ using Weasel.Postgresql;
 using Marten.Schema;
 using Marten.Services;
 using Marten.Storage;
+using Marten.WeaselExport;
 using Remotion.Linq;
 using Weasel.Core;
 using Weasel.Postgresql.SqlGeneration;

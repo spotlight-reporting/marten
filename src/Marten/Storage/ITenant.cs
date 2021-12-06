@@ -7,6 +7,7 @@ using Marten.Internal;
 using Marten.Internal.Storage;
 using Marten.Schema.Identity.Sequences;
 using Marten.Services;
+using Marten.WeaselExport;
 using Npgsql;
 using Weasel.Core;
 using Weasel.Postgresql;
@@ -51,7 +52,9 @@ namespace Marten.Storage
         IFeatureSchema FindFeature(Type storageType);
     }
 
-    public interface ITenant: ITenantStorage
+
+
+    public interface ITenant: ITenantStorage, IConnectionSource
     {
         string TenantId { get; }
 
@@ -88,12 +91,6 @@ namespace Marten.Storage
         /// <typeparam name="T"></typeparam>
         /// <param name="floor"></param>
         Task ResetHiloSequenceFloor<T>(long floor);
-
-        /// <summary>
-        ///     Fetch a connection to the tenant database
-        /// </summary>
-        /// <returns></returns>
-        NpgsqlConnection CreateConnection();
 
 
         /// <summary>
