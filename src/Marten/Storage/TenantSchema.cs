@@ -53,7 +53,7 @@ namespace Marten.Storage
             }
         }
 
-        private void writeDatabaseSchemaGenerationScript(string directory, IFeatureSchema[] schemaObjects)
+        private void writeDatabaseSchemaGenerationScript(string directory, ISchemaObjectGroup[] schemaObjects)
         {
             var allSchemaNames = schemaObjects
                 .SelectMany(x => x.Objects)
@@ -95,7 +95,7 @@ namespace Marten.Storage
         {
             var writer = new StringWriter();
 
-            StoreOptions.Advanced.DdlRules.WriteScript(writer, (r, w) =>
+            DdlRules.WriteScript(writer, (r, w) =>
             {
                 var allSchemaNames = StoreOptions.Storage.AllSchemaNames();
                 DatabaseSchemaGenerator.WriteSql(allSchemaNames, w);
